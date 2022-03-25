@@ -69,7 +69,13 @@
             class="border-bottom my-3"
             style="height: 100px; margin-left: -16px; margin-right: -16px"
           >
-            GRAPH
+            <apexchart
+              width="100%"
+              height="100%"
+              type="line"
+              :options="chartOptions"
+              :series="series"
+            ></apexchart>
           </div>
           <div
             class="d-flex justify-content-between mb-1"
@@ -169,9 +175,73 @@
       >
         <img src="./assets/IMG.jpg" alt="" />
       </div>
+      <div class="card shadow">
+        <div class="card-body">asdf</div>
+      </div>
     </div>
   </div>
 </template>
+
+<script>
+import VueApexCharts from "vue3-apexcharts";
+
+export default {
+  name: "App",
+  components: {
+    apexchart: VueApexCharts,
+  },
+  data() {
+    return {
+      chartOptions: {
+        chart: {
+          id: "vuechart-example",
+          toolbar: {
+            show: false,
+          },
+        },
+        // xaxis: {
+        //   categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+        // },
+        legend: {
+          show: false,
+        },
+        yaxis: {
+          show: false,
+        },
+        xaxis: {
+          labels: {
+            show: false,
+          },
+          axisBorder: {
+            show: false,
+          },
+          axisTicks: {
+            show: false,
+          },
+        },
+        grid: {
+          show: false,
+        },
+        stroke: {
+          show: true,
+          curve: "smooth",
+          lineCap: "butt",
+          colors: undefined,
+          width: 1,
+          dashArray: 0,
+        },
+        colors: ["#2ec62d"],
+      },
+      series: [
+        {
+          name: "series-1",
+          data: [30, 40, 35, 50, 49, 60, 70, 91],
+        },
+      ],
+    };
+  },
+};
+</script>
 
 <style lang="scss">
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;500;600;700&display=swap");
