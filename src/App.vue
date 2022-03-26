@@ -4,6 +4,7 @@
   <!-- https://developers.google.com/chart/interactive/docs/gallery/linechart -->
   <div id="app">
     <div class="d-flex justify-content-around align-items-center w-100 vh-100">
+      <!-- <div class="d-flex justify-content-around w-100 vh-100"> -->
       <div
         id="robinhood"
         class="card shadow position-relative rounded-0"
@@ -14,8 +15,8 @@
           style="font-size: 0.8rem"
         >
           <!-- <small> <i class="bi bi-reception-4"></i> Verizon LTE </small> -->
-          <div style="font-size: 0.7rem">
-            <strong> 10:05 </strong>
+          <div style="font-family: Inter; font-size: 0.7rem; font-weight: 600">
+            10:05
           </div>
           <div>
             <i class="bi bi-reception-4 pe-1"></i>
@@ -67,15 +68,21 @@
           </div>
           <div
             class="border-bottom my-3"
-            style="height: 100px; margin-left: -16px; margin-right: -16px"
+            style="
+              height: 100px;
+              margin-top: -20px;
+              margin-left: -16px;
+              margin-right: -16px;
+            "
           >
-            <apexchart
-              width="100%"
-              height="100%"
-              type="line"
-              :options="chartOptions"
-              :series="series"
-            ></apexchart>
+            <div style="transform: translateY(-2.2rem)">
+              <apexchart
+                :options="chartOptions"
+                :series="series"
+                width="100%"
+                height="160px"
+              ></apexchart>
+            </div>
           </div>
           <div
             class="d-flex justify-content-between mb-1"
@@ -161,7 +168,7 @@
           <div
             class="rounded-pill"
             style="
-              width: 90px;
+              width: 100px;
               height: 3.5px;
               background-color: #000;
               margin-bottom: 0.4rem;
@@ -169,13 +176,16 @@
           ></div>
         </div>
       </div>
-      <div
+      <!-- <div
         class="card shadow"
         style="min-width: 278px; width: 278px; height: 600px"
       >
         <img src="./assets/IMG.jpg" alt="" />
-      </div>
+      </div> -->
       <div class="card shadow">
+        <div class="card-header">
+          <h4 class="m-0">Settings</h4>
+        </div>
         <div class="card-body">asdf</div>
       </div>
     </div>
@@ -195,6 +205,8 @@ export default {
       chartOptions: {
         chart: {
           id: "vuechart-example",
+          type: "line",
+          parentHeightOffset: 0,
           toolbar: {
             show: false,
           },
@@ -221,13 +233,19 @@ export default {
         },
         grid: {
           show: false,
+          padding: {
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+          },
         },
         stroke: {
           show: true,
           curve: "smooth",
           lineCap: "butt",
           colors: undefined,
-          width: 1,
+          width: 1.3,
           dashArray: 0,
         },
         colors: ["#2ec62d"],
@@ -235,7 +253,28 @@ export default {
       series: [
         {
           name: "series-1",
-          data: [30, 40, 35, 50, 49, 60, 70, 91],
+          data: [
+            // 1, 0.5,
+            167391904, 161576838, 161413854, 152177211, 140762210, 144381072,
+            // 154352310, 165531790, 175748881, 187064037, 197520685, 210176418,
+            196122924, 207337480, 200258882, 186829538, 192456897, 204299711,
+            // 192759017, 203596183, 208107346, 196359852, 192570783, 177967768,
+            190632803, 203725316, 218226177, 210698669, 217640656, 216142362,
+            // 201410971, 196704289, 190436945, 178891686, 171613962, 157579773,
+            158677098, 147129977, 151561876, 151627421, 143543872, 136581057,
+            // 135560715, 122625263, 112091484, 98810329, 99882912, 94943095,
+            104875743, 116383678, 125028841, 123967310, 133167029, 128577263,
+            // 115836969, 119264529, 109363374, 113985628, 114650999, 110866108,
+            96473454, 104075886, 103568384, 101534883, 115825447, 126133916,
+            // 116502109, 130169411, 124296886, 126347399, 131483669, 142811333,
+            129675396, 115514483, 117630630, 122340239, 132349091, 125613305,
+            // 135592466, 123408762, 111991454, 116123955, 112817214, 113029590,
+            108753398, 99383763, 100151737, 94985209, 82913669, 78748268,
+            // 63829135, 78694727, 80868994, 93799013, 99042416, 97298692,
+            83353499, 71248129, 75253744, 68976648, 71002284, 75052401,
+            // 83894030, 90236528, 99739114, 96407136, 108323177, 101578914,
+            // 115877608, 112088857, 112071353, 101790062, 115003761, 120457727,
+          ].reverse(),
         },
       ],
     };
@@ -256,7 +295,7 @@ body {
 #app {
   font-family: "CapsuleSansText", "Inter", sans-serif;
   // -webkit-font-smoothing: antialiased;
-  // -moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale;
   background-color: #f3f3f5;
 }
 .green {
