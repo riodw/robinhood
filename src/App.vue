@@ -63,12 +63,14 @@
               </span>
               Today
             </div>
-            <div class="">
-              <span class="green" style="font-weight: 800">
-                <span class="up" style="margin-right: 2px"></span>
-                $0.00000 (0.00%)
-              </span>
-              After-Hours
+            <div style="height: 13.68px">
+              <div v-if="!inHours()">
+                <span class="green" style="font-weight: 800">
+                  <span class="up" style="margin-right: 2px"></span>
+                  $0.00000 (0.00%)
+                </span>
+                After-Hours
+              </div>
             </div>
           </div>
           <div
@@ -211,12 +213,12 @@
           ></div>
         </div>
       </div>
-      <!-- <div
+      <div
         class="card shadow"
         style="min-width: 278px; width: 278px; height: 600px"
       >
         <img src="./assets/IMG.jpg" alt="" />
-      </div> -->
+      </div>
       <div class="card shadow" style="font-family: Helvetica; width: 400px">
         <div class="card-header">
           <h4 class="m-0">Settings</h4>
@@ -232,13 +234,13 @@
                   <small>
                     <label class="form-check-label">
                       <i> 24 hr </i>
+                      <input
+                        v-model="twofour"
+                        class="form-check-input"
+                        type="checkbox"
+                        checked
+                      />
                     </label>
-                    <input
-                      v-model="twofour"
-                      class="form-check-input"
-                      type="checkbox"
-                      checked
-                    />
                   </small>
                 </div>
               </div>
@@ -410,9 +412,13 @@
               </button>
             </div>
           </div>
-          <div>
+          <div class="mb-3">
             <label>Buying Power</label>
             <input v-model="buying_power" class="form-control" type="number" />
+          </div>
+          <div v-if="!inHours()">
+            <label>After Hours</label>
+            <input v-model="after_hours" class="form-control" type="number" />
           </div>
         </div>
       </div>
@@ -440,10 +446,10 @@ export default {
       battery: "bi-battery-full", // bi-battery-half
       start: 234289,
       end: 535489.68,
-      after_hours: 0,
       time_range: "1D",
       volatility: 0,
       buying_power: 4579.38,
+      after_hours: 0,
 
       // CHART
       chartOptions: {
@@ -523,6 +529,14 @@ export default {
       ],
     };
   },
+  methods: {
+    inHours() {
+      return (
+        moment(this.time, "HH:mm").isSameOrAfter(moment("09:30", "HH:mm")) &&
+        moment(this.time, "HH:mm").isSameOrBefore(moment("16:00", "HH:mm"))
+      );
+    },
+  },
   computed: {
     twelvetime() {
       return moment(this.time, "HH:mm").format("h:mm");
@@ -549,7 +563,7 @@ body {
   // -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #f3f3f5;
-  background-color: #000;
+  // background-color: #000;
 }
 .green {
   color: #00cb00 !important;
