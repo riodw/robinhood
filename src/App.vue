@@ -2,6 +2,7 @@
   <!-- https://preview.redd.it/9cwrc6k687p81.jpg?width=1242&format=pjpg&auto=webp&s=48b8f7c09ca324a92f0eb1597597f25375beee46 -->
   <!-- https://pbs.twimg.com/media/EuCRmkzXAAIeI8l?format=jpg&name=large -->
   <!-- https://developers.google.com/chart/interactive/docs/gallery/linechart -->
+  <!-- https://apexcharts.com/docs/chart-types/line-chart/ -->
   <div id="app">
     <div class="d-flex justify-content-around align-items-center w-100 vh-100">
       <!-- <div class="d-flex justify-content-around w-100 vh-100"> -->
@@ -16,12 +17,12 @@
         >
           <!-- <small> <i class="bi bi-reception-4"></i> Verizon LTE </small> -->
           <div style="font-family: Inter; font-size: 0.7rem; font-weight: 600">
-            10:05
+            {{ twofour ? time : twelvetime }}
           </div>
           <div>
-            <i class="bi bi-reception-4 pe-1"></i>
-            <i class="bi bi-wifi pe-1"></i>
-            <i class="bi bi-battery-full" style="font-size: 0.8rem"></i>
+            <i :class="data" class="bi pe-1"></i>
+            <i :class="wifi" class="bi pe-1"></i>
+            <i :class="battery" class="bi"></i>
           </div>
         </nav>
         <div
@@ -34,7 +35,9 @@
           >
             <div>
               <h5 style="margin-bottom: 0.18rem">Investing</h5>
-              <h5 class="m-0">$535,489.69</h5>
+              <h5 class="m-0">
+                ${{ Number(end.toFixed(2)).toLocaleString() }}
+              </h5>
             </div>
             <div>
               <button
@@ -54,7 +57,9 @@
             <div class="mb-1">
               <span class="green" style="font-weight: 800">
                 <span class="up" style="margin-right: 2px"></span>
-                $301,200.00 (128.56%)
+                ${{ Number((end - start).toFixed(2)).toLocaleString() }} ({{
+                  Number(percentChange.toFixed(2)).toLocaleString()
+                }}%)
               </span>
               Today
             </div>
@@ -88,12 +93,42 @@
             class="d-flex justify-content-between mb-1"
             style="padding-top: 0.13rem"
           >
-            <button class="btn b-green text-white btn-time py-0">1D</button>
-            <button class="btn green btn-time">1W</button>
-            <button class="btn green btn-time">1M</button>
-            <button class="btn green btn-time">3M</button>
-            <button class="btn green btn-time">1Y</button>
-            <button class="btn green btn-time">ALL</button>
+            <button
+              :class="{ 'b-green': time_range === '1D' }"
+              class="btn btn-time"
+            >
+              1D
+            </button>
+            <button
+              :class="{ 'b-green': time_range === '1W' }"
+              class="btn green btn-time"
+            >
+              1W
+            </button>
+            <button
+              :class="{ 'b-green': time_range === '1M' }"
+              class="btn green btn-time"
+            >
+              1M
+            </button>
+            <button
+              :class="{ 'b-green': time_range === '3M' }"
+              class="btn green btn-time"
+            >
+              3M
+            </button>
+            <button
+              :class="{ 'b-green': time_range === '1Y' }"
+              class="btn green btn-time"
+            >
+              1Y
+            </button>
+            <button
+              :class="{ 'b-green': time_range === 'ALL' }"
+              class="btn green btn-time"
+            >
+              ALL
+            </button>
           </div>
           <div
             class="w-100"
@@ -109,7 +144,7 @@
           >
             <div>Buying Power</div>
             <div>
-              $4,579.38
+              ${{ Number(buying_power.toFixed(2)).toLocaleString() }}
               <i class="bi bi-chevron-right text-opacity-50 text-secondary"></i>
             </div>
           </div>
@@ -182,17 +217,211 @@
       >
         <img src="./assets/IMG.jpg" alt="" />
       </div> -->
-      <div class="card shadow">
+      <div class="card shadow" style="font-family: Helvetica; width: 400px">
         <div class="card-header">
           <h4 class="m-0">Settings</h4>
         </div>
-        <div class="card-body">asdf</div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col mb-3">
+              <div class="row">
+                <div class="col">
+                  <label>Time</label>
+                </div>
+                <div class="col form-check form-switch">
+                  <small>
+                    <label class="form-check-label">
+                      <i> 24 hr </i>
+                    </label>
+                    <input
+                      v-model="twofour"
+                      class="form-check-input"
+                      type="checkbox"
+                      checked
+                    />
+                  </small>
+                </div>
+              </div>
+              <input v-model="time" class="form-control" type="time" />
+            </div>
+            <div class="col mb-3">
+              <label>Stat Bar</label>
+              <div class="btn-group btn-group">
+                <div class="btn-group" role="group">
+                  <button
+                    class="btn btn-outline-primary dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                  >
+                    <i :class="data" class="bi pe-1"></i>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <button
+                        @click="data = 'bi-reception-4'"
+                        class="dropdown-item"
+                      >
+                        <i class="bi bi-reception-4"></i>
+                      </button>
+                      <button
+                        @click="data = 'bi-reception-3'"
+                        class="dropdown-item"
+                      >
+                        <i class="bi bi-reception-3"></i>
+                      </button>
+                      <button
+                        @click="data = 'bi-reception-2'"
+                        class="dropdown-item"
+                      >
+                        <i class="bi bi-reception-2"></i>
+                      </button>
+                      <button
+                        @click="data = 'bi-reception-1'"
+                        class="dropdown-item"
+                      >
+                        <i class="bi bi-reception-1"></i>
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+                <div class="btn-group" role="group">
+                  <button
+                    class="btn btn-outline-primary dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                  >
+                    <i :class="wifi" class="bi pe-1"></i>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <button @click="wifi = 'bi-wifi'" class="dropdown-item">
+                        <i class="bi bi-wifi"></i>
+                      </button>
+                      <button @click="wifi = 'bi-wifi-2'" class="dropdown-item">
+                        <i class="bi bi-wifi-2"></i>
+                      </button>
+                      <button @click="wifi = 'bi-wifi-1'" class="dropdown-item">
+                        <i class="bi bi-wifi-1"></i>
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+                <div class="btn-group" role="group">
+                  <button
+                    class="btn btn-outline-primary dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                  >
+                    <i :class="battery" class="bi"></i>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <button
+                        @click="battery = 'bi-battery-full'"
+                        class="dropdown-item"
+                      >
+                        <i class="bi bi-battery-full"></i>
+                      </button>
+                      <button
+                        @click="battery = 'bi-battery-half'"
+                        class="dropdown-item"
+                      >
+                        <i class="bi bi-battery-half"></i>
+                      </button>
+                      <button
+                        @click="battery = 'bi-battery'"
+                        class="dropdown-item"
+                      >
+                        <i class="bi bi-battery"></i>
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col mb-3">
+              <label>Start</label>
+              <input v-model="start" class="form-control" type="number" />
+            </div>
+            <div class="col mb-3">
+              <label>End</label>
+              <input v-model="end" class="form-control" type="number" />
+            </div>
+          </div>
+          <div class="mb-1">
+            <label>Volatility</label>
+            <input class="form-range" type="range" />
+          </div>
+          <div>
+            <label>Time Range</label>
+            <div class="btn-group w-100 mb-3">
+              <button
+                @click="time_range = '1D'"
+                :class="
+                  time_range === '1D' ? 'btn-primary' : 'btn-outline-primary'
+                "
+                class="btn"
+              >
+                1D
+              </button>
+              <button
+                @click="time_range = '1W'"
+                :class="
+                  time_range === '1W' ? 'btn-primary' : 'btn-outline-primary'
+                "
+                class="btn"
+              >
+                1W
+              </button>
+              <button
+                @click="time_range = '1M'"
+                :class="
+                  time_range === '1M' ? 'btn-primary' : 'btn-outline-primary'
+                "
+                class="btn"
+              >
+                1M
+              </button>
+              <button
+                @click="time_range = '3M'"
+                :class="
+                  time_range === '3M' ? 'btn-primary' : 'btn-outline-primary'
+                "
+                class="btn"
+              >
+                3M
+              </button>
+              <button
+                @click="time_range = '1Y'"
+                :class="
+                  time_range === '1Y' ? 'btn-primary' : 'btn-outline-primary'
+                "
+                class="btn"
+              >
+                1Y
+              </button>
+              <button
+                @click="time_range = 'ALL'"
+                :class="
+                  time_range === 'ALL' ? 'btn-primary' : 'btn-outline-primary'
+                "
+                class="btn"
+              >
+                ALL
+              </button>
+            </div>
+          </div>
+          <div>
+            <label>Buying Power</label>
+            <input v-model="buying_power" class="form-control" type="number" />
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import moment from "moment";
 import VueApexCharts from "vue3-apexcharts";
 
 export default {
@@ -202,6 +431,21 @@ export default {
   },
   data() {
     return {
+      // SETTINGS
+      time: moment(Date.now()).format("HH:mm"),
+      // time: "13:20",
+      twofour: false,
+      data: "bi-reception-4", // bi-reception-1, bi-reception-2, bi-reception-3
+      wifi: "bi-wifi", // bi-wifi-1, bi-wifi-2
+      battery: "bi-battery-full", // bi-battery-half
+      start: 234289,
+      end: 535489.68,
+      after_hours: 0,
+      time_range: "1D",
+      volatility: 0,
+      buying_power: 4579.38,
+
+      // CHART
       chartOptions: {
         chart: {
           id: "vuechart-example",
@@ -279,6 +523,14 @@ export default {
       ],
     };
   },
+  computed: {
+    twelvetime() {
+      return moment(this.time, "HH:mm").format("h:mm");
+    },
+    percentChange() {
+      return ((this.end - this.start) / Math.abs(this.start)) * 100;
+    },
+  },
 };
 </script>
 
@@ -297,11 +549,13 @@ body {
   // -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #f3f3f5;
+  background-color: #000;
 }
 .green {
   color: #00cb00 !important;
 }
 .b-green {
+  color: #fff !important;
   background-color: #00c805 !important;
 }
 .up {
