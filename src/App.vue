@@ -4,222 +4,280 @@
   <!-- https://developers.google.com/chart/interactive/docs/gallery/linechart -->
   <!-- https://apexcharts.com/docs/chart-types/line-chart/ -->
   <div id="app">
-    <div class="d-flex justify-content-around align-items-center w-100 vh-100">
-      <!-- <div class="d-flex justify-content-around w-100 vh-100"> -->
-      <div
-        id="robinhood"
-        class="card shadow position-relative rounded-0"
-        style="min-width: 278px; width: 278px; height: 600px"
-      >
-        <nav
-          class="d-flex justify-content-between ps-4 pe-2 pt-2 mx-2 mb-4"
-          style="font-size: 0.8rem"
-        >
-          <!-- <small> <i class="bi bi-reception-4"></i> Verizon LTE </small> -->
-          <div style="font-family: Inter; font-size: 0.7rem; font-weight: 600">
-            {{ twofour ? time : twelvetime }}
-          </div>
-          <div>
-            <i :class="data" class="bi pe-1"></i>
-            <i :class="wifi" class="bi pe-1"></i>
-            <i :class="battery" class="bi"></i>
-          </div>
-        </nav>
-        <div
-          class="mb-0"
-          style="padding: 0.5rem 1rem 0.8rem 1rem; margin-top: 0.42rem"
-        >
-          <div
-            class="d-flex justify-content-between"
-            style="font-weight: 600; margin-bottom: 0.85rem"
+    <!-- <div class="d-flex justify-content-around align-items-center w-100 vh-100"> -->
+    <div class="d-flex justify-content-center w-100 my-4">
+      <div class="position-relative">
+        <div class="btn-group w-100 mb-4">
+          <button
+            @click="phone = 'blank'"
+            :class="{ active: phone === 'blank' }"
+            class="btn btn-primary"
           >
-            <div>
-              <h5 style="margin-bottom: 0.18rem">Investing</h5>
-              <h5 class="m-0">
-                ${{ Number(end.toFixed(2)).toLocaleString() }}
-              </h5>
-            </div>
-            <div>
-              <button
-                class="btn btn-primary btn-sm green rounded-pill border-0 py-1 mt-1"
+            Blank
+          </button>
+          <button
+            @click="phone = 'iPhone'"
+            :class="{ active: phone === 'iPhone' }"
+            class="btn btn-primary"
+          >
+            iPhone
+          </button>
+          <button
+            @click="phone = 'android'"
+            :class="{ active: phone === 'android' }"
+            class="btn btn-primary"
+          >
+            iPoor
+          </button>
+        </div>
+        <div
+          class="card shadow position-relative rounded-0 mb-4"
+          style="min-width: 278px; width: 278px; height: 600px"
+        >
+          <div id="robinhood" class="overflow-hidden">
+            <nav
+              class="d-flex justify-content-between ps-4 pe-2 pt-2 mx-2"
+              style="font-size: 0.8rem; margin-bottom: 1.94rem"
+            >
+              <!-- <small> <i class="bi bi-reception-4"></i> Verizon LTE </small> -->
+              <div
+                style="font-family: Inter; font-size: 0.7rem; font-weight: 600"
+              >
+                {{ twofour ? time : twelvetime }}
+              </div>
+              <div style="margin-right: 5px">
+                <i :class="data" class="bi pe-1"></i>
+                <i :class="wifi" class="bi pe-1"></i>
+                <i :class="battery" class="bi"></i>
+              </div>
+            </nav>
+            <div
+              class="mb-0"
+              style="padding: 0.5rem 1rem 0.8rem 1rem; margin-top: 0.42rem"
+            >
+              <div
+                class="d-flex justify-content-between"
+                style="font-weight: 600; margin-bottom: 0.85rem"
+              >
+                <div>
+                  <h5 style="margin-bottom: 0.18rem">Investing</h5>
+                  <h5 class="m-0">
+                    ${{
+                      Number(end).toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })
+                    }}
+                  </h5>
+                </div>
+                <div>
+                  <button
+                    class="btn btn-primary btn-sm green rounded-pill border-0 py-1 mt-1"
+                    style="
+                      background-color: #e4fae5;
+                      font-size: 0.57rem;
+                      font-weight: 800;
+                      padding-left: 0.8rem;
+                    "
+                  >
+                    <i class="bi bi-gift-fill"></i> Rewards
+                  </button>
+                </div>
+              </div>
+              <div style="font-size: 0.57rem">
+                <div class="mb-1">
+                  <span class="green" style="font-weight: 800">
+                    <span class="up" style="margin-right: 2px"></span>
+                    ${{ dayGain }} ({{ percentChangeDay }}%)
+                  </span>
+                  Today
+                </div>
+                <div style="height: 13.68px">
+                  <div v-if="!inHours()">
+                    <span class="green" style="font-weight: 800">
+                      <span class="up" style="margin-right: 2px"></span>
+                      ${{
+                        Number(after_hours).toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })
+                      }}
+                      ({{ percentChangeAfter }}%)
+                    </span>
+                    After-Hours
+                  </div>
+                </div>
+              </div>
+              <div
+                class="border-bottom my-3"
                 style="
-                  background-color: #e4fae5;
-                  font-size: 0.57rem;
-                  font-weight: 800;
-                  padding-left: 0.8rem;
+                  height: 100px;
+                  margin-top: -20px;
+                  margin-left: -16px;
+                  margin-right: -16px;
                 "
               >
-                <i class="bi bi-gift-fill"></i> Rewards
-              </button>
-            </div>
-          </div>
-          <div style="font-size: 0.57rem">
-            <div class="mb-1">
-              <span class="green" style="font-weight: 800">
-                <span class="up" style="margin-right: 2px"></span>
-                ${{ Number((end - start).toFixed(2)).toLocaleString() }} ({{
-                  Number(percentChange.toFixed(2)).toLocaleString()
-                }}%)
-              </span>
-              Today
-            </div>
-            <div style="height: 13.68px">
-              <div v-if="!inHours()">
-                <span class="green" style="font-weight: 800">
-                  <span class="up" style="margin-right: 2px"></span>
-                  $0.00000 (0.00%)
-                </span>
-                After-Hours
+                <div style="transform: translateY(-2.2rem)">
+                  <apexchart
+                    :options="chartOptions"
+                    :series="series"
+                    width="100%"
+                    height="160px"
+                  ></apexchart>
+                </div>
+              </div>
+              <div
+                class="d-flex justify-content-between mb-1"
+                style="padding-top: 0.13rem"
+              >
+                <button
+                  :class="{ 'b-green': time_range === '1D' }"
+                  class="btn btn-time"
+                >
+                  1D
+                </button>
+                <button
+                  :class="{ 'b-green': time_range === '1W' }"
+                  class="btn green btn-time"
+                >
+                  1W
+                </button>
+                <button
+                  :class="{ 'b-green': time_range === '1M' }"
+                  class="btn green btn-time"
+                >
+                  1M
+                </button>
+                <button
+                  :class="{ 'b-green': time_range === '3M' }"
+                  class="btn green btn-time"
+                >
+                  3M
+                </button>
+                <button
+                  :class="{ 'b-green': time_range === '1Y' }"
+                  class="btn green btn-time"
+                >
+                  1Y
+                </button>
+                <button
+                  :class="{ 'b-green': time_range === 'ALL' }"
+                  class="btn green btn-time"
+                >
+                  ALL
+                </button>
+              </div>
+              <div
+                class="w-100"
+                style="
+                  height: 0.05rem;
+                  background-color: #e8e8e8;
+                  margin: 0.875rem 0 0.8rem 0;
+                "
+              ></div>
+              <div
+                class="d-flex justify-content-between"
+                style="font-size: 0.58rem"
+              >
+                <div>Buying Power</div>
+                <div>
+                  ${{ Number(buying_power.toFixed(2)).toLocaleString() }}
+                  <i
+                    class="bi bi-chevron-right text-opacity-50 text-secondary"
+                  ></i>
+                </div>
               </div>
             </div>
-          </div>
-          <div
-            class="border-bottom my-3"
-            style="
-              height: 100px;
-              margin-top: -20px;
-              margin-left: -16px;
-              margin-right: -16px;
-            "
-          >
-            <div style="transform: translateY(-2.2rem)">
-              <apexchart
-                :options="chartOptions"
-                :series="series"
-                width="100%"
-                height="160px"
-              ></apexchart>
+            <div class="bg-gray p-1">
+              <div
+                class="d-flex bg-white flex-column justify-content-between text-center p-3"
+                style="font-size: 0.8rem; height: 140px; border-radius: 0.19rem"
+              >
+                <div>
+                  Your're all caught up!
+                  <br />
+                  New cards will be added here as they
+                  <br />
+                  become available.
+                </div>
+                <div class="green">Start Over</div>
+              </div>
+            </div>
+            <div
+              class="mb-0"
+              style="padding: 0.5rem 1rem 0.8rem 1rem; margin-top: 0.25rem"
+            >
+              <div
+                class="d-flex justify-content-between"
+                style="font-weight: 600; margin-bottom: 0.85rem"
+              >
+                <div>
+                  <h6 style="margin-bottom: 0.18rem">Options</h6>
+                </div>
+              </div>
+            </div>
+            <div
+              class="d-flex flex-column position-absolute align-items-center bottom-0 bg-white w-100 bg-white"
+            >
+              <nav
+                class="d-flex justify-content-between align-items-center w-100"
+                style="padding: 0.54rem 1.5rem; margin-bottom: 0.55rem"
+              >
+                <div>
+                  <i class="bi bi-graph-up"></i>
+                </div>
+                <div class="opacity-50">
+                  <i class="bi bi-cash-stack"></i>
+                </div>
+                <div class="opacity-50">
+                  <i class="bi bi-search"></i>
+                </div>
+                <div class="opacity-50">
+                  <i class="bi bi-chat-left-dots-fill"></i>
+                </div>
+                <div class="opacity-50">
+                  <i class="bi bi-person-fill"></i>
+                </div>
+              </nav>
+              <!-- v-if="phone === 'iPhone'" -->
+              <div
+                class="rounded-pill"
+                style="
+                  width: 100px;
+                  height: 3.5px;
+                  background-color: #000;
+                  margin-bottom: 0.4rem;
+                "
+              ></div>
             </div>
           </div>
-          <div
-            class="d-flex justify-content-between mb-1"
-            style="padding-top: 0.13rem"
-          >
-            <button
-              :class="{ 'b-green': time_range === '1D' }"
-              class="btn btn-time"
-            >
-              1D
-            </button>
-            <button
-              :class="{ 'b-green': time_range === '1W' }"
-              class="btn green btn-time"
-            >
-              1W
-            </button>
-            <button
-              :class="{ 'b-green': time_range === '1M' }"
-              class="btn green btn-time"
-            >
-              1M
-            </button>
-            <button
-              :class="{ 'b-green': time_range === '3M' }"
-              class="btn green btn-time"
-            >
-              3M
-            </button>
-            <button
-              :class="{ 'b-green': time_range === '1Y' }"
-              class="btn green btn-time"
-            >
-              1Y
-            </button>
-            <button
-              :class="{ 'b-green': time_range === 'ALL' }"
-              class="btn green btn-time"
-            >
-              ALL
-            </button>
-          </div>
-          <div
-            class="w-100"
-            style="
-              height: 0.05rem;
-              background-color: #e8e8e8;
-              margin: 0.875rem 0 0.8rem 0;
-            "
-          ></div>
-          <div
-            class="d-flex justify-content-between"
-            style="font-size: 0.58rem"
-          >
-            <div>Buying Power</div>
-            <div>
-              ${{ Number(buying_power.toFixed(2)).toLocaleString() }}
-              <i class="bi bi-chevron-right text-opacity-50 text-secondary"></i>
-            </div>
-          </div>
+          <img
+            id="iphone"
+            v-show="phone === 'iPhone'"
+            src="./assets/iphone.png"
+            alt=""
+          />
+          <img
+            id="android"
+            v-show="phone === 'android'"
+            src="./assets/android.png"
+            alt=""
+          />
         </div>
-        <div class="bg-gray p-1">
-          <div
-            class="d-flex bg-white flex-column justify-content-between text-center p-3"
-            style="font-size: 0.8rem; height: 140px; border-radius: 0.19rem"
-          >
-            <div>
-              Your're all caught up!
-              <br />
-              New cards will be added here as they
-              <br />
-              become available.
-            </div>
-            <div class="green">Start Over</div>
-          </div>
-        </div>
-        <div
-          class="mb-0"
-          style="padding: 0.5rem 1rem 0.8rem 1rem; margin-top: 0.25rem"
-        >
-          <div
-            class="d-flex justify-content-between"
-            style="font-weight: 600; margin-bottom: 0.85rem"
-          >
-            <div>
-              <h6 style="margin-bottom: 0.18rem">Options</h6>
-            </div>
-          </div>
-        </div>
-        <div
-          class="d-flex flex-column position-absolute align-items-center bottom-0 bg-white w-100 bg-white"
-        >
-          <nav
-            class="d-flex justify-content-between align-items-center w-100"
-            style="padding: 0.54rem 1.5rem; margin-bottom: 0.55rem"
-          >
-            <div>
-              <i class="bi bi-graph-up"></i>
-            </div>
-            <div class="opacity-50">
-              <i class="bi bi-cash-stack"></i>
-            </div>
-            <div class="opacity-50">
-              <i class="bi bi-search"></i>
-            </div>
-            <div class="opacity-50">
-              <i class="bi bi-chat-left-dots-fill"></i>
-            </div>
-            <div class="opacity-50">
-              <i class="bi bi-person-fill"></i>
-            </div>
-          </nav>
-          <div
-            class="rounded-pill"
-            style="
-              width: 100px;
-              height: 3.5px;
-              background-color: #000;
-              margin-bottom: 0.4rem;
-            "
-          ></div>
+        <div class="text-center w-100">
+          <button class="btn btn-primary">
+            <i class="bi bi-arrow-down"></i>
+            Download
+          </button>
         </div>
       </div>
-      <div
+      <!-- <div
         class="card shadow"
         style="min-width: 278px; width: 278px; height: 600px"
       >
         <img src="./assets/IMG.jpg" alt="" />
-      </div>
-      <div class="card shadow" style="font-family: Helvetica; width: 400px">
+      </div> -->
+      <div class="card shadow" style="width: 400px; margin-left: 5rem">
         <div class="card-header">
           <h4 class="m-0">Settings</h4>
         </div>
@@ -342,12 +400,26 @@
           <div class="row">
             <div class="col mb-3">
               <label>Start</label>
-              <input v-model="start" class="form-control" type="number" />
+              <input
+                v-model="start"
+                min="1"
+                class="form-control"
+                type="number"
+              />
             </div>
             <div class="col mb-3">
               <label>End</label>
-              <input v-model="end" class="form-control" type="number" />
+              <input v-model="end" min="0" class="form-control" type="number" />
             </div>
+          </div>
+          <div class="mb-3">
+            <label>After Hours</label>
+            <input
+              v-model="after_hours"
+              :disabled="inHours()"
+              class="form-control"
+              type="number"
+            />
           </div>
           <div class="mb-1">
             <label>Volatility</label>
@@ -416,10 +488,6 @@
             <label>Buying Power</label>
             <input v-model="buying_power" class="form-control" type="number" />
           </div>
-          <div v-if="!inHours()">
-            <label>After Hours</label>
-            <input v-model="after_hours" class="form-control" type="number" />
-          </div>
         </div>
       </div>
     </div>
@@ -444,12 +512,15 @@ export default {
       data: "bi-reception-4", // bi-reception-1, bi-reception-2, bi-reception-3
       wifi: "bi-wifi", // bi-wifi-1, bi-wifi-2
       battery: "bi-battery-full", // bi-battery-half
-      start: 234289,
-      end: 535489.68,
+      start: 100,
+      // start: 234289,
+      end: 200,
+      // end: 535489.68,
       time_range: "1D",
       volatility: 0,
       buying_power: 4579.38,
-      after_hours: 0,
+      after_hours: 10,
+      phone: "blank",
 
       // CHART
       chartOptions: {
@@ -541,8 +612,35 @@ export default {
     twelvetime() {
       return moment(this.time, "HH:mm").format("h:mm");
     },
-    percentChange() {
-      return ((this.end - this.start) / Math.abs(this.start)) * 100;
+    dayGain() {
+      var n = 0;
+      if (this.inHours()) n = this.end - this.start;
+      n = this.end - this.after_hours - this.start;
+      return Number(n).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+    },
+    percentChangeDay() {
+      var n = 0;
+      if (this.inHours()) n = this.end;
+      n = this.end - this.after_hours;
+
+      n = ((n - this.start) / Math.abs(this.start)) * 100;
+
+      return Number(n).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+    },
+    percentChangeAfter() {
+      var n = this.end - this.after_hours;
+      n = ((this.end - n) / Math.abs(n)) * 100;
+
+      return Number(n).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
     },
   },
 };
@@ -556,14 +654,32 @@ export default {
 }
 html,
 body {
-  background-color: #f3f3f5;
+  // background-color: #f3f3f5;
+  background-color: #333;
+  font-family: Helvetica;
 }
 #app {
+  background-color: #333;
+}
+#robinhood {
   font-family: "CapsuleSansText", "Inter", sans-serif;
-  // -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #f3f3f5;
-  // background-color: #000;
+}
+#iphone {
+  z-index: 1000;
+  position: absolute;
+  width: 313px;
+  top: -17px;
+  left: -18px;
+  // opacity: 0.4;
+}
+#android {
+  z-index: 1000;
+  position: absolute;
+  width: 308px;
+  height: 624px;
+  top: -11px;
+  left: -13px;
+  // opacity: 0.4;
 }
 .green {
   color: #00cb00 !important;
