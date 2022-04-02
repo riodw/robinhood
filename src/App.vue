@@ -72,30 +72,66 @@
                 </div>
                 <div>
                   <button
-                    class="btn btn-primary btn-sm green rounded-pill border-0 py-1 mt-1"
-                    style="
-                      background-color: #e4fae5;
-                      font-size: 0.57rem;
-                      font-weight: 800;
-                      padding-left: 0.8rem;
+                    :class="end - start > 0 ? 'green' : 'red'"
+                    :style="
+                      end - start > 0
+                        ? 'background-color: #e4fae5'
+                        : 'background-color: #feede4'
                     "
+                    class="d-flex align-items-center btn btn-primary btn-sm rounded-pill border-0 py-1 mt-1"
+                    style="font-size: 0.57rem; font-weight: 800"
                   >
-                    <i class="bi bi-gift-fill"></i> Rewards
+                    <svg
+                      fill="none"
+                      height="10"
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width="13"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        clip-rule="evenodd"
+                        d="M9.02503 2.95626C8.38753 2.425 7.64377 2 6.68752 2C4.88126 2 3.5 3.38126 3.5 5.18752C3.5 6.99378 4.88126 8.37504 6.68752 8.37504H17.3126C19.1189 8.37504 20.5001 6.99378 20.5001 5.18752C20.5001 3.38126 19.1189 2 17.3126 2C16.3563 2 15.6126 2.425 14.9751 2.95626L12.0001 6.40458L9.02503 2.95626ZM7.628 4.39866C7.23596 4.09394 6.96119 4 6.68752 4C5.98583 4 5.5 4.48583 5.5 5.18752C5.5 5.88921 5.98583 6.37504 6.68752 6.37504H9.33311L7.628 4.39866ZM16.3721 4.39866L14.667 6.37504H17.3126C18.0143 6.37504 18.5001 5.88921 18.5001 5.18752C18.5001 4.48583 18.0143 4 17.3126 4C17.0389 4 16.7641 4.09394 16.3721 4.39866Z"
+                        :fill="end - start > 0 ? '#00c805' : '#ff5000'"
+                        fill-rule="evenodd"
+                      ></path>
+                      <path
+                        d="M20 22H13V10.5H20V22Z"
+                        :fill="end - start > 0 ? '#00c805' : '#ff5000'"
+                      ></path>
+                      <path
+                        d="M4 10.5H11V22H4V10.5Z"
+                        :fill="end - start > 0 ? '#00c805' : '#ff5000'"
+                      ></path>
+                    </svg>
+                    Rewards
                   </button>
                 </div>
               </div>
               <div style="font-size: 0.57rem">
                 <div class="mb-1">
-                  <span class="green" style="font-weight: 800">
-                    <span class="up" style="margin-right: 2px"></span>
+                  <span
+                    :class="end - start > 0 ? 'green' : 'red'"
+                    style="font-weight: 800"
+                  >
+                    <span
+                      :class="end - start > 0 ? 'up' : 'down'"
+                      style="margin-right: 2px"
+                    ></span>
                     ${{ dayGain }} ({{ percentChangeDay }}%)
                   </span>
                   Today
                 </div>
                 <div style="height: 13.68px">
                   <div v-if="!inHours()">
-                    <span class="green" style="font-weight: 800">
-                      <span class="up" style="margin-right: 2px"></span>
+                    <span
+                      :class="after_hours > 0 ? 'green' : 'red'"
+                      style="font-weight: 800"
+                    >
+                      <span
+                        :class="after_hours > 0 ? 'up' : 'down'"
+                        style="margin-right: 2px"
+                      ></span>
                       ${{
                         Number(after_hours).toLocaleString(undefined, {
                           minimumFractionDigits: 2,
@@ -127,42 +163,43 @@
                 </div>
               </div>
               <div
+                :class="end - start > 0 ? 'green' : 'red'"
                 class="d-flex justify-content-between mb-1"
                 style="padding-top: 0.13rem"
               >
                 <button
-                  :class="{ 'b-green': time_range === '1D' }"
+                  :class="{ 'b-active': time_range === '1D' }"
                   class="btn btn-time"
                 >
                   1D
                 </button>
                 <button
-                  :class="{ 'b-green': time_range === '1W' }"
-                  class="btn green btn-time"
+                  :class="{ 'b-active': time_range === '1W' }"
+                  class="btn btn-time"
                 >
                   1W
                 </button>
                 <button
-                  :class="{ 'b-green': time_range === '1M' }"
-                  class="btn green btn-time"
+                  :class="{ 'b-active': time_range === '1M' }"
+                  class="btn btn-time"
                 >
                   1M
                 </button>
                 <button
-                  :class="{ 'b-green': time_range === '3M' }"
-                  class="btn green btn-time"
+                  :class="{ 'b-active': time_range === '3M' }"
+                  class="btn btn-time"
                 >
                   3M
                 </button>
                 <button
-                  :class="{ 'b-green': time_range === '1Y' }"
-                  class="btn green btn-time"
+                  :class="{ 'b-active': time_range === '1Y' }"
+                  class="btn btn-time"
                 >
                   1Y
                 </button>
                 <button
-                  :class="{ 'b-green': time_range === 'ALL' }"
-                  class="btn green btn-time"
+                  :class="{ 'b-active': time_range === 'ALL' }"
+                  class="btn btn-time"
                 >
                   ALL
                 </button>
@@ -200,7 +237,7 @@
                   <br />
                   become available.
                 </div>
-                <div class="green">Start Over</div>
+                <div :class="end - start > 0 ? 'green' : 'red'">Start Over</div>
               </div>
             </div>
             <div
@@ -271,12 +308,12 @@
           </button>
         </div>
       </div>
-      <!-- <div
+      <div
         class="card shadow"
-        style="min-width: 278px; width: 278px; height: 600px"
+        style="min-width: 278px; width: 278px; height: 600px; margin-left: 5rem"
       >
-        <img src="./assets/IMG.jpg" alt="" />
-      </div> -->
+        <img src="./assets/red.jpg" />
+      </div>
       <div class="card shadow" style="width: 400px; margin-left: 5rem">
         <div class="card-header">
           <h4 class="m-0">Settings</h4>
@@ -402,6 +439,7 @@
               <label>Start</label>
               <input
                 v-model="start"
+                @input="update()"
                 min="1"
                 class="form-control"
                 type="number"
@@ -409,7 +447,13 @@
             </div>
             <div class="col mb-3">
               <label>End</label>
-              <input v-model="end" min="0" class="form-control" type="number" />
+              <input
+                v-model="end"
+                @input="update()"
+                min="0"
+                class="form-control"
+                type="number"
+              />
             </div>
           </div>
           <div class="mb-3">
@@ -607,6 +651,14 @@ export default {
         moment(this.time, "HH:mm").isSameOrBefore(moment("16:00", "HH:mm"))
       );
     },
+    update() {
+      this.chartOptions = {
+        ...this.chartOptions,
+        ...{
+          colors: this.end - this.start > 0 ? ["#2ec62d"] : ["#fe5100"],
+        },
+      };
+    },
   },
   computed: {
     twelvetime() {
@@ -681,12 +733,21 @@ body {
   left: -13px;
   // opacity: 0.4;
 }
-.green {
+.green,
+.green > .btn {
   color: #00cb00 !important;
 }
-.b-green {
+.red,
+.red > .btn {
+  color: #ff4f00 !important;
+}
+.green > .b-active {
   color: #fff !important;
   background-color: #00c805 !important;
+}
+.red > .b-active {
+  color: #fff !important;
+  background-color: #ff4f00 !important;
 }
 .up {
   width: 0px;
@@ -694,9 +755,15 @@ body {
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
   border-bottom: 7px solid #00c805;
-  // transform: translateY(10px);
   display: inline-block;
-  // margin-top: -10px;
+}
+.down {
+  width: 0px;
+  height: 0px;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 7px solid #ff4f00;
+  display: inline-block;
 }
 .btn-time {
   border-radius: 4px !important;
