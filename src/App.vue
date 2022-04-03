@@ -227,6 +227,7 @@
             </div>
             <div class="bg-gray p-1">
               <div
+                v-if="!error"
                 class="d-flex bg-white flex-column justify-content-between text-center p-3"
                 style="font-size: 0.8rem; height: 140px; border-radius: 0.19rem"
               >
@@ -238,6 +239,10 @@
                   become available.
                 </div>
                 <div :class="end - start > 0 ? 'green' : 'red'">Start Over</div>
+              </div>
+              <div v-else class="text-center" style="heig">
+                There was an error loading your <br />
+                notifications.
               </div>
             </div>
             <div
@@ -466,8 +471,13 @@
             />
           </div>
           <div class="mb-1">
-            <label>Volatility</label>
-            <input class="form-range" type="range" />
+            <label>Volatility ({{ volatility }})</label>
+            <input
+              v-model="volatility"
+              @change="chart()"
+              class="form-range"
+              type="range"
+            />
           </div>
           <div>
             <label>Time Range</label>
@@ -532,6 +542,12 @@
             <label>Buying Power</label>
             <input v-model="buying_power" class="form-control" type="number" />
           </div>
+          <div class="form-check">
+            <label class="form-check-label">
+              Error
+              <input v-model="error" class="form-check-input" type="checkbox" />
+            </label>
+          </div>
         </div>
       </div>
     </div>
@@ -561,9 +577,10 @@ export default {
       end: 200,
       // end: 535489.68,
       time_range: "1D",
-      volatility: 0,
+      volatility: 20,
       buying_power: 4579.38,
       after_hours: 10,
+      error: false,
       phone: "blank",
 
       // CHART
@@ -658,6 +675,30 @@ export default {
           colors: this.end - this.start > 0 ? ["#2ec62d"] : ["#fe5100"],
         },
       };
+    },
+    chart() {
+      var data = [];
+
+      // var n = 0;
+      // if (this.inHours()) n = this.end;
+      // else n = this.end - this.after_hours;
+
+      for (var i = 0; i < 60; i++) {
+        var x = Math.floor(
+          Math.random() * (this.volatility - this.volatility * -1) +
+            this.volatility * -1
+        );
+        data.push(x);
+      }
+
+      this.series = [
+        {
+          name: "series-1",
+          data: data,
+        },
+      ];
+
+      console.log(this.volatility);
     },
   },
   computed: {
