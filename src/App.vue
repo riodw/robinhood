@@ -313,12 +313,12 @@
           </button>
         </div>
       </div>
-      <div
+      <!-- <div
         class="card shadow"
         style="min-width: 278px; width: 278px; height: 600px; margin-left: 5rem"
       >
         <img src="./assets/red.jpg" />
-      </div>
+      </div> -->
       <div class="card shadow" style="width: 400px; margin-left: 5rem">
         <div class="card-header">
           <h4 class="m-0">Settings</h4>
@@ -465,6 +465,7 @@
             <label>After Hours</label>
             <input
               v-model="after_hours"
+              @input="update()"
               :disabled="inHours()"
               class="form-control"
               type="number"
@@ -675,21 +676,51 @@ export default {
           colors: this.end - this.start > 0 ? ["#2ec62d"] : ["#fe5100"],
         },
       };
+      this.chart();
     },
     chart() {
       var data = [];
 
-      // var n = 0;
-      // if (this.inHours()) n = this.end;
-      // else n = this.end - this.after_hours;
+      var n = 0;
+      var e = 0;
 
-      for (var i = 0; i < 60; i++) {
-        var x = Math.floor(
+      if (this.inHours()) {
+        n = this.end - this.start;
+        e = 61;
+      } else {
+        n = this.end - this.start - this.after_hours;
+        e = 51;
+      }
+
+      n = (n / e).toFixed(2);
+
+      // console.log(n);
+
+      for (let i = 0; i < e; i++) {
+        let a = Number((this.start + n * i).toFixed(2));
+
+        let x = Math.floor(
           Math.random() * (this.volatility - this.volatility * -1) +
             this.volatility * -1
         );
-        data.push(x);
+        x = Number((x * 0.01).toFixed(2));
+        x = a * x;
+
+        console.log(x, a);
+        data.push(Math.trunc(a + x));
       }
+
+      n = this.start + n * e;
+
+      if (!this.inHours())
+        for (let i = 0; i < 10; i++) {
+          let x = Math.floor(
+            Math.random() * (this.volatility - this.volatility * -1) +
+              this.volatility * -1
+          );
+
+          data.push(Math.trunc(n + (this.after_hours / 10) * i) + x);
+        }
 
       this.series = [
         {
